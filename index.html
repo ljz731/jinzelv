@@ -377,6 +377,23 @@
       padding: 0.2rem 0.8rem;
       border-radius: 40px;
     }
+    .project-actions {
+      margin-top: 0.8rem;
+    }
+    .proj-btn {
+      display: inline-block;
+      text-decoration: none;
+      border: 1px solid var(--border-light);
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      color: inherit;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .proj-btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
 
     /* 技能矩阵 */
     .skill-matrix {
@@ -524,9 +541,11 @@
       <div class="tabs-nav" id="projTabsNav">
         <button class="tab-btn active" id="projAwardBtn">竞赛荣誉</button>
         <button class="tab-btn" id="projProjectBtn">社团项目</button>
+        <button class="tab-btn" id="projWorksBtn">个人项目</button>
       </div>
       <div class="tab-pane active" id="projAwardPane"></div>
       <div class="tab-pane" id="projProjectPane"></div>
+      <div class="tab-pane" id="projWorksPane"></div>
     </section>
 
     <!-- 技能矩阵 -->
@@ -584,6 +603,11 @@
           { name:'校园文学沙龙系列', tech:'策划/组织', result:'5场活动，200+人次参与' },
           { name:'合唱团公益演出', tech:'团队管理/统筹', result:'3场活动，观众600+人次' },
           { name:'返校宣讲社群', tech:'社群运营', result:'服务150+家庭，满意度98%' }
+        ],
+        projWorks: [
+          { name:'飞机大战 · 星际守护者', tech:'HTML5 Canvas / JS', result:'科幻风格射击游戏', href:'../飞机大战/index.html' },
+          { name:'神经网络手势演示', tech:'Web ML / MediaPipe', result:'实时手势与姿态识别', href:'../神经网络/index.html' },
+          { name:'Fruitwarp Ninja', tech:'Three.js / MediaPipe', result:'手势切水果交互游戏', href:'../index.html/aaa.html' }
         ],
         skills: [
           { cat:'校园运营', items:['活动策划','社群搭建','资源协调','渠道触达'] },
@@ -652,13 +676,15 @@
           card.innerHTML = `
             <div class="project-name">${p.name}</div>
             <div class="project-tech"><span class="tech-tag">${p.tech}</span></div>
-            <div style="opacity:0.8;">${p.result}</div>
+            <div style="opacity:0.8;">${p.result || ''}</div>
+            ${p.href ? `<div class="project-actions"><a class="proj-btn" href="${p.href}" target="_blank" rel="noopener">访问演示</a></div>` : ''}
           `;
           grid.appendChild(card);
         });
       }
       renderProjPane('projAwardPane', resume.projAwards);
       renderProjPane('projProjectPane', resume.projProjects);
+      renderProjPane('projWorksPane', resume.projWorks);
 
       // 技能矩阵
       const skillMatrix = document.getElementById('skillMatrix');
@@ -712,8 +738,8 @@
       });
 
       // 项目 tabs
-      const projBtns = [document.getElementById('projAwardBtn'), document.getElementById('projProjectBtn')];
-      const projPanes = [document.getElementById('projAwardPane'), document.getElementById('projProjectPane')];
+      const projBtns = [document.getElementById('projAwardBtn'), document.getElementById('projProjectBtn'), document.getElementById('projWorksBtn')];
+      const projPanes = [document.getElementById('projAwardPane'), document.getElementById('projProjectPane'), document.getElementById('projWorksPane')];
       projBtns.forEach((btn, idx) => {
         btn.addEventListener('click', () => {
           projBtns.forEach(b => b.classList.remove('active'));
